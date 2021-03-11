@@ -9,16 +9,17 @@ import PostCard from '../Components/postcard';
 function Home(){
     const FETCH_POSTS_QUERY = gql`
     {
-       getPosts{
-           id body createdAt username
-           likes{
-               username
-           }
-           comments{
-               id username createdAt body
-           }
-       }
-    }`;
+        getPosts{
+            id body createdAt username
+            likes{
+                username
+            }
+            comments{
+                id username createdAt body
+            }
+        }
+    }
+    `;
    //data:{getPosts:posts}
     const { 
         loading,
