@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {useQuery} from '@apollo/client';
 
-import {AuthContext} from '../auth';
+import {AuthContext} from '../context/auth';
 import {Grid,Transition} from 'semantic-ui-react';
 import PostCard from '../Components/postcard';
 import PostForm from '../Components/PostForm';

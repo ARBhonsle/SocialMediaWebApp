@@ -1,69 +1,82 @@
-import React from 'react'
-import {Button, Form} from 'semantic-ui-react'
+import React,{useState} from 'react'
+import { Button, Form } from 'semantic-ui-react'
 import gql from 'graphql-tag'
-import {useForm} from '../Pages/util/hooks'
-import {useMutation} from '@apollo/client/react/hooks'
-import {FETCH_POSTS_QUERY} from '../Pages/util/graphql'
+import { useMutation } from '@apollo/client/react/hooks'
 
-function PostForm(){
-const {values, onChange, onSubmit} =useForm(createPostCallback, {
-    body:''
-});
+import { useForm } from '../Pages/util/hooks'
+import { FETCH_POSTS_QUERY } from '../Pages/util/graphql'
 
-const [createPost, {error}]=useMutation(CREATE_POST_MUTATION,{
-    variables:values,
-    update(proxy,result){
-        const data = proxy.readQuery({            
-            query: FETCH_POSTS_QUERY
-        });
-        data.getPosts=[result.data.createPost, ...data.getPosts];
-        proxy.writeQuery({query:FETCH_POSTS_QUERY, data});
-        values.body='';
+function PostForm() {
+    const [setErrors]=useState({});
+    const { values, onChange, onSubmit } = useForm(createPostCallback, {
+        body: ''
+    });
+
+    const [createPost,{error}] = useMutation(CREATE_POST_MUTATION, {
+        variables: values,
+        update(proxy, result) {
+            const data = proxy.readQuery({
+                query: FETCH_POSTS_QUERY
+            });
+            data.getPosts = [result.data.createPost, ...data.getPosts];
+            proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+            values.body = '';
+        },
+        onError(err){
+            console.log("Body is Empty"); 
+         }
+    });
+
+    function createPostCallback() {
+        createPost();
     }
-});
 
-function createPostCallback(){
-    createPost()
-}
-
-    return(
+    return (
         <>
-        <Form onSubmit={onSubmit}>
-            <h2>Create a post:</h2>
-            <Form.Field>
-                <Form.Input
-                placeholder="Hello !!"
-                name="body"
-                onChange={onChange}
-                value={values.body}
-                error={error?true:false}
-                />
-                <Button type="submit" color="teal">
-                    Submit
+            <Form onSubmit={onSubmit}>
+                <h2>Create a post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Hello !!"
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error ? true : false}
+                    />
+                    <Button type="submit" color="teal">
+                        Submit
                 </Button>
-            </Form.Field>
-        </Form>
-        {error && (
-            <div className="ui error message" style={{marginBottom:20}}>
-                <ul className="list">
-                    <li>{error.graphQLErrors[0].message}</li>
-                </ul>
-            </div>
-        )}
-        </>
+                </Form.Field>
+            </Form>
+            {error && (
+                <div className="ui error message" style={{ marginBottom: 20 }}>
+                    <ul className="list">
+                        <li> <p>Body is empty!!</p> </li>
+                    </ul>
+                </div>
+            )}
+            </>
     );
 }
 
-const CREATE_POST_MUTATION=gql`
+const CREATE_POST_MUTATION = gql`
 mutation createPost($body: String!){
-    createPost(body:$body){
-        id body createdAt username
+    createPost(body: $body){
+        id
+        body
+        createdAt
+        username
         likes{
-            id username createdAt
+            id
+            username
+            createdAt
         }
         likeCount
         comments{
-            id body username createdAt
+            id 
+            body 
+            username 
+            createdAt
         }
         commentCount
     }

@@ -5,17 +5,13 @@ const commentResolvers = require('./comment');
 module.exports={
     Post:{
         //likeCount: {parent}
-        likeCount(parent){
-            console.log(parent);
-            return parent.likes.length;
-        },
+        likeCount:(parent) => parent.likes.length,
         //commentCount:{parent}
         commentCount:(parent) =>  parent.comments.length
         
     },
     Query: {
         ...postsResolvers.Query
-        
     },
     Mutation: {
         ...usersResolvers.Mutation,
