@@ -21,11 +21,27 @@ function Home(){
     }
     `;
    //data:{getPosts:posts}
-    const { 
-        loading,
-        data:{getPosts:posts}
-    } = useQuery(FETCH_POSTS_QUERY);
-    // divided remove from grid column and keep rows 
+   // divided remove from grid column and keep rows 
+
+   /* const [createPost] = useMutation(CREATE_POST_MUTATION, {
+    variables: values,
+    update (proxy, result) {
+      const data = proxy.readQuery({
+        query: FETCH_POSTS_QUERY
+      })
+      const new_post = result.data.createPost //here's the new var
+      proxy.writeQuery({
+        query: FETCH_POSTS_QUERY,
+        data: { getPosts: [new_post, ...data.getPosts] } // here you're using that var to write the cache
+      })
+      values.body = ''
+    }
+  }) 
+  
+  */  
+    const { loading, 
+        data:{getPosts:posts}={}}
+         = useQuery(FETCH_POSTS_QUERY);
     return(
     <Grid columns={3}>
     <Grid.Row className="page-title">

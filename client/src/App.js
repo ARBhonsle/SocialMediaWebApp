@@ -6,6 +6,8 @@ import { Container } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
+import {AuthProvider} from './auth'
+
 import MenuBar from './Components/MenuBar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
@@ -32,7 +34,8 @@ function App() {
       </div> */
      // <div><h1>Welcome to Social Media App</h1></div> only one out by return
      // <Container> has <div container...></div> in itself so no need to explicitly write it as that won't work
-      <Router>         
+      <AuthProvider>
+        <Router>         
             <Container>
               <MenuBar/>
               <Route exact path='/' component={Home}/>
@@ -40,6 +43,7 @@ function App() {
               <Route exact path="/register" component={Register}/>
             </Container>
       </Router>
+      </AuthProvider>
   );
 }
 

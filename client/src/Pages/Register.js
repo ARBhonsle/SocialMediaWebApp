@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {Button, Form} from 'semantic-ui-react'
 import {useMutation} from '@apollo/client/react/hooks'//used instead of @apollo/react-hooks
 import gql from 'graphql-tag'
 
-function Register(){
-    const [values, setValues]=useState({
+import {AuthContext} from '../auth'
+import { useForm } from './util/hooks';
+
+function Register(props){
+    const context=useContext(AuthContext)
+    const [errors, setErrors]=useState({})
+   
+    const { onChange, onSubmit, values} =useForm(registerUser, {
         username:'',
         email:'',
         password:'',
         confirmPassword:''
     });
 
-    const onChange=(event)=>{
+   /* const onChange=(event)=>{
         setValues({ ...values,[event.target.name]:event.target.value});
-    }
+    } */
 
     const [addUser, {loading}]=useMutation(REGISTER_USER,{
-        update(proxy,result){
-            console.log(result)
+        update(_,{data:{register:userData}}){
+            context.login(userData)
+            props.history.push('/');
         },
         onError(err){
-            setErrors()
+            setErrors(err.graphQLErrors[0].extensions.exception.errors);
         },
         variables: values
     });
 
-    const onSubmit=(event)=>{
+   /* const onSubmit=(event)=>{
         event.preventDefault();
         addUser();
-    };
+    };*/
+
+    function registerUser(){
+        addUser();
+    }
     
     return(
         <div className="form-container">
-           <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-           <h1>Register Page</h1>
+           <Form onSubmit={onSubmit} noValidate className={ loading?'loading':''}>
+           <h1>Register</h1>
            <Form.Input
            label="Username"
            placeholder="Username.."
            name="username"
            type="text"
+           error={errors.username?true:false}
            value={values.username}
            onChange={onChange}
            />
@@ -47,6 +59,7 @@ function Register(){
            placeholder="Email.."
            name="email"
            type="email"
+           error={errors.email?true:false}
            value={values.email}
            onChange={onChange}
            />
@@ -55,6 +68,7 @@ function Register(){
            placeholder="Password.."
            name="password"
            type="password"
+           error={errors.password?true:false}
            value={values.password}
            onChange={onChange}
            />
@@ -63,6 +77,7 @@ function Register(){
            placeholder="Confirm password"
            name="confirmPassword"
            type="password"
+           error={errors.confirmPassword?true:false}
            value={values.confirmPassword}
            onChange={onChange}
            />
@@ -70,6 +85,15 @@ function Register(){
                Register
            </Button>
            </Form>
+          {Object.keys(errors).length>0 && ( 
+            <div className="ui error message">
+                <ul className="list">
+                    {Object.values(errors).map(value =>(
+                        <li key={value}>{value}</li>
+                    ))}
+                </ul>
+           </div>
+           )}
             </div>
     )
 }
