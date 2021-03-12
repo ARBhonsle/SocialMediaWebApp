@@ -74,7 +74,7 @@ mutation login(
     $username:String!
     $password:String!
 ){
-    login(        
+    login(
         username:$username
         password:$password        
     ){
