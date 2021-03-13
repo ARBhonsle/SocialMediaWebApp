@@ -12,10 +12,28 @@ import MenuBar from './Components/MenuBar';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+import SinglePost from './Pages/SinglePost';
 
 
 function App() {
   return (
+      <AuthProvider>
+        <Router>         
+            <Container>
+              <MenuBar/>
+              <Route exact path='/' component={Home}/>
+              <Route exact path="/login" component={Login}/>
+              <Route exact path="/register" component={Register}/>
+             <Route exact path="/posts/:postId" component={SinglePost}/>
+            </Container>
+      </Router>
+      </AuthProvider>
+  );
+}
+
+export default App;
+
+
      /* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -34,17 +52,3 @@ function App() {
       </div> */
      // <div><h1>Welcome to Social Media App</h1></div> only one out by return
      // <Container> has <div container...></div> in itself so no need to explicitly write it as that won't work
-      <AuthProvider>
-        <Router>         
-            <Container>
-              <MenuBar/>
-              <Route exact path='/' component={Home}/>
-              <Route exact path="/login" component={Login}/>
-              <Route exact path="/register" component={Register}/>
-            </Container>
-      </Router>
-      </AuthProvider>
-  );
-}
-
-export default App;

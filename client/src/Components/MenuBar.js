@@ -29,7 +29,7 @@ function MenuBar() {
             name='logout'
             onClick={handleItemClick}
             as={Link}
-            to='/logout'
+            to='/login'
             />            
           </Menu.Menu>
         </Menu>
