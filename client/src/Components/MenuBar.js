@@ -3,7 +3,7 @@ import { Menu } from 'semantic-ui-react'
 import {Link} from 'react-router-dom' // import for link to work
 // Segment not imported from semantic-ui-react
 
-import {AuthContext} from '../auth'
+import {AuthContext} from '../context/auth'
 
 // class=> function
 function MenuBar() {

@@ -3,7 +3,7 @@ import {Button, Form} from 'semantic-ui-react'
 import {useMutation} from '@apollo/client/react/hooks'//used instead of @apollo/react-hooks
 import gql from 'graphql-tag'
 
-import {AuthContext} from '../auth'
+import {AuthContext} from '../context/auth'
 import { useForm } from './util/hooks';
 
 function Login(props){
@@ -74,7 +74,7 @@ mutation login(
     $username:String!
     $password:String!
 ){
-    login(        
+    login(
         username:$username
         password:$password        
     ){
