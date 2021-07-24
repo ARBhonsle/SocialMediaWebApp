@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client/react/hooks';
 import gql from 'graphql-tag'
 import { Button, Label, Icon } from 'semantic-ui-react';
+import MyPopup from '../Pages/util/MyPopup';
 
 function LikeButton({ user, post: { id, likeCount, likes } }) {
     const [liked, setLiked] = useState(false);
-    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (user && likes.find((like) => like.username === user.username)) {
@@ -37,14 +37,19 @@ function LikeButton({ user, post: { id, likeCount, likes } }) {
         );
 
     return (
-        <Button as="div" labelPosition="right" onClick={likePost}>
+        <MyPopup
+        content={liked ? 'Unlike' : 'Like'}
+        >
+            <Button as="div" labelPosition="right" onClick={likePost}>
             <Label>
-                {LikeButton}
+                {likeButton}
             </Label>
             <Label basic color="teal" pointing="left">
                 {likeCount}
             </Label>
         </Button>
+        </MyPopup>
+        
     );
 }
 const LIKE_POST_MUTATION = gql`

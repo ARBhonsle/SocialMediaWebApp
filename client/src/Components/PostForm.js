@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client/react/hooks'
@@ -7,7 +7,6 @@ import { useForm } from '../Pages/util/hooks'
 import { FETCH_POSTS_QUERY } from '../Pages/util/graphql'
 
 function PostForm() {
-    const [setErrors]=useState({});
     const { values, onChange, onSubmit } = useForm(createPostCallback, {
         body: ''
     });
@@ -24,6 +23,7 @@ function PostForm() {
         },
         onError(err){
             console.log("Body is Empty"); 
+            return err;
          }
     });
 
